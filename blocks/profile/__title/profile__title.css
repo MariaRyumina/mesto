@@ -1,0 +1,19 @@
+.profile__title {
+    margin: 0;
+    font-weight: 500;
+    grid-area: title;
+}
+
+@media screen and (max-width: 768px) {
+    .profile__title {
+        font-size: calc(27px + 15 * (100vw - 320px) / 448); /* размер текста будет уменьшаться пропорционально размеру окна */
+        line-height: 33px;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .profile__title {
+        font-size: 42px;
+        line-height: 48px;
+    }
+}

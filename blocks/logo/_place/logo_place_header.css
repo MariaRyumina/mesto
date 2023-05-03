@@ -1,0 +1,17 @@
+@media screen and (max-width: 1024px) {
+    .logo_place_header {
+        margin-left: 27px;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .logo_place_header {
+        margin: 0;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .logo_place_header {
+        max-width: 104px;
+    }
+}
