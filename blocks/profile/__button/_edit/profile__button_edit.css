@@ -10,6 +10,7 @@
     height: 24px;
     width: 24px;
     grid-area: button;
+    cursor: pointer;
 }
 
 @media screen and (max-width: 768px) {

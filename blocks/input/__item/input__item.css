@@ -1,0 +1,9 @@
+.input__item {
+    padding: 13px 0;
+    border: none;
+    border-bottom: 1px solid #000;
+    width: 100%;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+}
