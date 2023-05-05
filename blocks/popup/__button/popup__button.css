@@ -9,4 +9,18 @@
     font-weight: 400;
     font-size: 18px;
     line-height: 22px;
+    cursor: pointer;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.popup__button:hover {
+    opacity: .8;
+}
+
+@media screen and (max-width: 768px) {
+    .popup__button {
+        width: 238px;
+        font-size: 14px;
+        line-height: 17px;
+    }
 }

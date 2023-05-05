@@ -1,6 +1,7 @@
 .profile__info {
     display: grid;
     justify-content: start;
+    grid-template-columns: auto 24px;
     grid-template-areas:
         "title button"
         "subtitle subtitle";
@@ -14,5 +15,6 @@
         justify-items: center;
         column-gap: 10px;
         row-gap: 8px;
+        grid-template-columns: auto 18px;
     }
 }

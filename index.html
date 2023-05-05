@@ -17,10 +17,10 @@
                     <img src="images/avatar.png" alt="аватар" class="profile__avatar">
                     <div class="profile__info">
                         <h1 class="profile__title">Жак-Ив Кусто</h1>
-                        <button class="profile__button profile__button_edit"></button>
+                        <button class="profile__button profile__button_edit" type="button"></button>
                         <p class="profile__subtitle">Исследователь океана</p>
                     </div>
-                    <button class="profile__button profile__button_add"></button>
+                    <button class="profile__button profile__button_add" type="button"></button>
                 </section>
                 <section class="elements">
                     <div class="element">
@@ -73,16 +73,16 @@
             <div class="popup">
                 <div class="popup__container">
                     <img src="images/close.svg" alt="закрыть" class="popup__close">
-                    <form class="popup__content">
+                    <form class="popup__form" name="edit-profile">
                         <h2 class="popup__title">Редактировать профиль</h2>
                         <fieldset class="popup__input-container">
-                            <input type="text" placeholder="Имя" class="input__item input__item_name">
+                            <input type="text" placeholder="Имя" name="name" class="popup__input popup__input_value_name">
                         </fieldset>
                         <fieldset class="popup__input-container">
-                            <input type="text" placeholder="О себе" class="input__item input__item_about">
+                            <input type="text" placeholder="О себе" name="about" class="popup__input popup__input__value_about">
                         </fieldset>
-                        <button class="popup__button">Сохранить</button>
                     </form>
+                    <button class="popup__button" type="submit">Сохранить</button>
                 </div>
             </div>
         </div>

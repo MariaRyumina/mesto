@@ -1,3 +1,9 @@
 .element__like {
     max-width: 22px;
+    transition: opacity 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.element__like:hover {
+    opacity: .5;
 }

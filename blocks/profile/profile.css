@@ -3,7 +3,7 @@
     color: #fff;
     margin: 40px auto 0;
     display: grid;
-    grid-template-columns: 120px auto 150px;
+    grid-template-columns: 120px 1fr 150px;
     column-gap: 30px;
     align-items: center;
 }
