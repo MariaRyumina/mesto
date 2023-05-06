@@ -11,7 +11,7 @@
 
 @media screen and (max-width: 768px) {
     .profile__subtitle {
-        font-size: calc(14px + 4 * (100vw - 320px) / 448); /* размер текста будет уменьшаться пропорционально размеру окна */;
+        font-size: calc(14px + 4 * (100vw - 320px) / 448); /* размер текста будет уменьшаться пропорционально размеру окна */
         line-height: 17px;
         padding-bottom: 6px;
         max-width: calc(200px + 100 * (100vw - 320px) / 448);
