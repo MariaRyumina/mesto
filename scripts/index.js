@@ -13,18 +13,17 @@ buttonOpenPopup.addEventListener('click', function () {
     aboutInput.value = profileAbout.textContent;
 });
 
-function popupOpen () {
+function popupClose () {
     popup.classList.remove('popup_opened');
 }
 
-buttonClosePopup.addEventListener('click', popupOpen);
+buttonClosePopup.addEventListener('click', popupClose);
 
 function handleFormSubmit (evt) {
     evt.preventDefault();
-    // Вставьте новые значения с помощью textContent
     profileName.textContent = nameInput.value;
     profileAbout.textContent = aboutInput.value;
-    popupOpen();
+    popupClose();
 }
 
 formElement.addEventListener('submit', handleFormSubmit);
