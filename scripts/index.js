@@ -7,22 +7,24 @@ let aboutInput = document.querySelector('.popup__input_value_about');
 let profileName = document.querySelector('.profile__title');
 let profileAbout = document.querySelector('.profile__subtitle');
 
-buttonOpenPopup.addEventListener('click', function  () {
-    popup.classList.add('popup__opened');
+buttonOpenPopup.addEventListener('click', function () {
+    popup.classList.add('popup_opened');
     nameInput.value = profileName.textContent;
     aboutInput.value = profileAbout.textContent;
 });
 
-buttonClosePopup.addEventListener('click', function  () {
-    popup.classList.remove('popup__opened');
-});
+function popupOpen () {
+    popup.classList.remove('popup_opened');
+}
+
+buttonClosePopup.addEventListener('click', popupOpen);
 
 function handleFormSubmit (evt) {
     evt.preventDefault();
     // Вставьте новые значения с помощью textContent
     profileName.textContent = nameInput.value;
     profileAbout.textContent = aboutInput.value;
-    popup.classList.remove('popup__opened');
+    popupOpen();
 }
 
 formElement.addEventListener('submit', handleFormSubmit);
