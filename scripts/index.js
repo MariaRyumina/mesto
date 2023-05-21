@@ -2,6 +2,7 @@
 // POPUP
 // --------------------------------------------------------------------------------------
 const formElementEdit = document.querySelector('.popup__form_edit');
+const formElementAdd = document.querySelector('.popup__form_add');
 const buttonOpenEditPopup = document.querySelector('.profile__button-edit');
 const buttonOpenAddPopup = document.querySelector('.profile__button-add');
 const popupEdit = document.querySelector('.popup_content_edit');
@@ -10,7 +11,7 @@ const nameInput = document.querySelector('.popup__input_value_name');
 const aboutInput = document.querySelector('.popup__input_value_about');
 const profileName = document.querySelector('.profile__title');
 const profileAbout = document.querySelector('.profile__subtitle');
-const buttonClosePopup = document.querySelector('.popup__close');
+const buttonClosePopup = document.querySelectorAll('.popup__close');
 
 //открытие попапа Edit и внесение текущих значений из профайла в инпуты (РАБОТАЕТ!!)
 buttonOpenEditPopup.addEventListener('click', function () {
@@ -19,29 +20,24 @@ buttonOpenEditPopup.addEventListener('click', function () {
     aboutInput.value = profileAbout.textContent;
 });
 
-//функция закрытия попапа Edit (РАБОТАЕТ!!)
-function closeEditPopup () {
-    popupEdit.classList.remove('popup_opened');
-}
+//функция закрытие попапов (РАБОТАЕТ!!)
+const closePopup = (event) => {
+    event.classList.remove('popup_opened');
+};
 
-//закрытие попапа Edit через Х без сохранения значений (РАБОТАЕТ!!)
-buttonClosePopup.addEventListener('click', closeEditPopup);
+//закрытие попапа Edit через "Х" (РАБОТАЕТ!!)
+buttonClosePopup.forEach(btn => btn.addEventListener('click', function () {
+    closePopup(popupEdit);
+}));
 
-//закрытие попапа Edit через кнопку Save и добавление новых значение в профайл (РАБОТАЕТ!!)
+//закрытие попапа Edit через кнопку "Сохранить" и добавление новых значение в профайл (РАБОТАЕТ!!)
 function handleFormSubmitEdit (evt) {
     evt.preventDefault();
     profileName.textContent = nameInput.value;
     profileAbout.textContent = aboutInput.value;
-    closeEditPopup();
+    closePopup(popupEdit);
 }
 formElementEdit.addEventListener('submit', handleFormSubmitEdit);
-
-//открытие попапа Add (РАБОТАЕТ!!)
-buttonOpenAddPopup.addEventListener('click', function () {
-    popupAdd.classList.add('popup_opened');
-});
-
-
 
 // --------------------------------------------------------------------------------------
 // ДОБАВЛЕНИЕ КАРТОЧЕК
@@ -74,21 +70,6 @@ const initialCards = [
 ];
 const elements = document.querySelector('.elements');
 const templateElements = document.querySelector('#elements').content;
-const formElementAdd = document.querySelector('.popup__form_add');
-const titleInput = document.querySelector('.popup__input_value_title');
-const linkInput = document.querySelector('.popup__input_value_link');
-const elementTitle = document.querySelector('.element__title');
-const elementLink = document.querySelector('.element__img');
-
-//закрытие попапа Add через кнопку Save и добавление новой карточки   (!! НЕ работает !!)
-function handleFormSubmitAdd (evt) {
-    evt.preventDefault();
-    titleInput.value =
-    elementTitle.textContent = titleInput.value;
-    elementLink.textContent = linkInput.value;
-    closeEditPopup();
-}
-formElementAdd.addEventListener('submit', handleFormSubmitAdd);
 
 //лайк карточке  (РАБОТАЕТ!!)
 const buttonLike = (evt) => {
@@ -102,11 +83,7 @@ const deleteCard = (evt) => {
     card.remove();
 }
 
-//добавление новой карточки
-const newCard = () => {
-}
-
-//добавление 6 карточек на страницу
+//добавление 6 карточек на страницу  (РАБОТАЕТ!!)
 const createCard = (el) => {
     const card = templateElements.querySelector('.element').cloneNode(true);
     card.querySelector('.element__img').src = el.link;
@@ -116,7 +93,38 @@ const createCard = (el) => {
     card.querySelector('.element__like').addEventListener('click', buttonLike);
     card.querySelector('.element__delete').addEventListener('click', deleteCard);
 }
-
 initialCards.forEach((item) => {
-    createCard(item)
+    createCard(item);
 });
+
+//открытие попапа Add (РАБОТАЕТ!!)
+buttonOpenAddPopup.addEventListener('click', function () {
+    popupAdd.classList.add('popup_opened');
+});
+
+//закрытие попапа Add через "Х" (РАБОТАЕТ!!)
+buttonClosePopup.forEach(btn => btn.addEventListener('click', function () {
+    closePopup(popupAdd);
+}));
+
+const titleInput = document.querySelector('.popup__input_value_title');
+const linkInput = document.querySelector('.popup__input_value_link');
+
+//закрытие попапа Add через кнопку "Создать" и добавление новой карточки в галерею (РАБОТАЕТ!!)
+function handleFormSubmitAdd (evt) {
+    evt.preventDefault();
+    const card = templateElements.querySelector('.element').cloneNode(true);
+    card.querySelector('.element__img').src = linkInput.value;
+    card.querySelector('.element__title').textContent = titleInput.value;
+    card.querySelector('.element__img').setAttribute('alt', titleInput.value);
+    closePopup(popupAdd);
+    elements.prepend(card);
+    card.querySelector('.element__like').addEventListener('click', buttonLike);
+    card.querySelector('.element__delete').addEventListener('click', deleteCard);
+}
+formElementAdd.addEventListener('submit', handleFormSubmitAdd);
+
+//открытие попапа Image (не РАБОТАЕТ!!)
+// openImagePopup.addEventListener('click', function () {
+//     popupImage.classList.add('popup_opened');
+// });
