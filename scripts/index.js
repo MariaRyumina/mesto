@@ -114,7 +114,7 @@ const createNewCard = (el) => {
 
 //добавление 6 карточек из массива на страницу
 initialCards.forEach((item) => {
-    let card = createNewCard(item);
+    const card = createNewCard(item);
     elements.append(card);
 });
 
@@ -124,22 +124,15 @@ buttonOpenAddPopup.addEventListener('click', function () {
 });
 
 //закрытие попапа Add через кнопку "Создать" и добавление новой карточки в галерею
-// const handleFormSubmitAdd = (evt) => {
-//     evt.preventDefault();
-//     createNewCard();
-//     card.querySelector('.element__img').src = linkInput.value;
-//     card.querySelector('.element__title').textContent = titleInput.value;
-//     card.querySelector('.element__img').setAttribute('alt', titleInput.value);
-//     card.querySelector('.element__like').addEventListener('click', buttonLike);
-//     card.querySelector('.element__delete').addEventListener('click', deleteCard);
-//     card.querySelector('.element__img').addEventListener('click', () => {
-//         image.src = card.querySelector('.element__img').src;
-//         image.alt = card.querySelector('.element__title').textContent;
-//         imageCaption.textContent = card.querySelector('.element__title').textContent;
-//         openPopup(popupImage);
-//     });
-//     closePopup(popupAdd);
-//     elements.prepend(card);
-//     formElementAdd.reset();
-// }
-// formElementAdd.addEventListener('submit', handleFormSubmitAdd);
+const handleFormSubmitAdd = (evt) => {
+    evt.preventDefault();
+    let newCard = {
+        name: titleInput.value,
+        link: linkInput.value
+    }
+    const card = createNewCard(newCard);
+    closePopup(popupAdd);
+    elements.prepend(card);
+    formElementAdd.reset();
+}
+formElementAdd.addEventListener('submit', handleFormSubmitAdd);
