@@ -12,6 +12,7 @@ const aboutInput = document.querySelector('.popup__input_value_about');
 const profileName = document.querySelector('.profile__title');
 const profileAbout = document.querySelector('.profile__subtitle');
 const buttonsClosePopup = document.querySelectorAll('.popup__close');
+const popups = document.querySelectorAll('.popup');
 
 //функция открытия попапов
 const openPopup = (popup) => {
@@ -22,6 +23,24 @@ const openPopup = (popup) => {
 const closePopup = (popup) => {
     popup.classList.remove('popup_opened');
 };
+
+//закрытие попапа на кнопку 'esc'
+document.querySelector('.page').addEventListener('keydown',(evt) => {
+    if (evt.key === 'Escape') {
+        popups.forEach(popup => {
+            closePopup(popup);
+        })
+    }
+})
+
+//закрытие попапа на overlay
+popups.forEach(popup => {
+    popup.addEventListener('click',(evt) => {
+        if (evt.target === evt.currentTarget) {
+            closePopup(popup);
+        }
+    })
+})
 
 //закрытие попапов через "Х"
 buttonsClosePopup.forEach((btn) => {

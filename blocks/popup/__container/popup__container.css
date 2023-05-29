@@ -6,6 +6,7 @@
     margin: auto;
     padding: 34px 36px 37px;
     box-sizing: border-box;
+    cursor: default;
 }
 
 @media screen and (max-width: 768px) {
