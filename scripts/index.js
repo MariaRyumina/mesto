@@ -25,13 +25,13 @@ const closePopup = (popup) => {
 };
 
 //закрытие попапа на кнопку 'esc'
-document.querySelector('.page').addEventListener('keydown',(evt) => {
-    if (evt.key === 'Escape') {
-        popups.forEach(popup => {
-            closePopup(popup);
-        })
-    }
-})
+// document.querySelector('.page').addEventListener('keydown',(evt) => {
+//     if (evt.key === 'Escape') {
+//         popups.forEach(popup => {
+//             closePopup(popup);
+//         })
+//     }
+// })
 
 //закрытие попапа на overlay
 popups.forEach(popup => {
