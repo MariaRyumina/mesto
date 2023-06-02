@@ -14,6 +14,11 @@ const profileAbout = document.querySelector('.profile__subtitle');
 const buttonsClosePopup = document.querySelectorAll('.popup__close');
 const popups = document.querySelectorAll('.popup');
 
+const preloadEditPopup = () => {
+    nameInput.value = profileName.textContent;
+    aboutInput.value = profileAbout.textContent;
+}
+preloadEditPopup();
 //функция открытия попапов
 const openPopup = (popup) => {
     popup.classList.add('popup_opened');
@@ -50,10 +55,11 @@ buttonsClosePopup.forEach((btn) => {
 
 //открытие попапа Edit и внесение текущих значений из профайла в инпуты
 buttonOpenEditPopup.addEventListener('click', function () {
-    openPopup(popupEdit);
     nameInput.value = profileName.textContent;
     aboutInput.value = profileAbout.textContent;
+    openPopup(popupEdit);
 });
+
 
 //закрытие попапа Edit через кнопку "Сохранить" и добавление новых значение в профайл
 const handleFormSubmitEdit = (evt) => {
@@ -151,7 +157,11 @@ const handleFormSubmitAdd = (evt) => {
     }
     const card = createNewCard(newCard);
     closePopup(popupAdd);
+    const button = formElementAdd.querySelector('.popup__button');
+    button.setAttribute('disabled', true);
+    button.classList.add('popup__button_disable');
     elements.prepend(card);
     formElementAdd.reset();
+
 }
 formElementAdd.addEventListener('submit', handleFormSubmitAdd);

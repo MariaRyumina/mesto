@@ -1,56 +1,86 @@
-const submitButtonChangeState = (form) => {
-    const button = form.querySelector('.popup__button')
-    if (!form.checkValidity()) {
-        button.setAttribute('disabled', true);
-        button.classList.add('popup__button_disable');
-    } else {
-        button.removeAttribute('disabled');
-        button.classList.remove('popup__button_disable');
-    }
-}
-
-const getErrorElement = (input) => {
-    return document.querySelector(`#${input.id}-error`);
-}
-
 // Функция, которая добавляет класс с ошибкой
-const showInputError = (input) => {
-    const errorElement = getErrorElement(input);
-    errorElement.textContent = input.validationMessage;
-    input.classList.add('popup__input_type_error');
+const showInputError = (formElement, inputElement) => {
+    const errorElement = formElement.querySelector(`#${inputElement.id}-error`); // Выбираем элемент ошибки (span) по его id
+    errorElement.textContent = inputElement.validationMessage;
+    inputElement.classList.add('popup__input_type_error');
 };
 
 // Функция, которая удаляет класс с ошибкой
-const hideInputError = (input) => {
-    const errorElement = getErrorElement(input);
+const hideInputError = (formElement, inputElement) => {
+    const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
     errorElement.textContent = '';
-    input.classList.remove('popup__input_type_error');
+    inputElement.classList.remove('popup__input_type_error');
 };
 
 // Функция, которая проверяет валидность поля
-const validateInput = (input) => {
-    if (!input.validity.valid) {
-        showInputError(input);  // Если поле не проходит валидацию, покажем ошибку
+const checkInputValidity = (formElement, inputElement) => {
+    if (!inputElement.validity.valid) {
+        showInputError(formElement, inputElement);  // Если поле не проходит валидацию, покажем ошибку
     } else {
-        hideInputError(input);  // Если проходит, скроем
+        hideInputError(formElement, inputElement);  // Если проходит, скроем
     }
 };
 
-const sendForm = (evt) => {
-    evt.preventDefault();
-    const form = evt.target;
+const hasValidityInput = (inputList) => {
+    return inputList.some((inputElement) => {
+        return !inputElement.validity.valid;
+    })
 }
 
-const validateInputEvent = (evt) => {
-    const input = evt.target;
-    const form = evt.currentTarget;
-    validateInput(input);
-    submitButtonChangeState(form);
+// функция изменяет состояние кнопок 'сохранить' и 'добавить'
+const toggleButtonState = (inputList, buttonElement) => {
+    if (hasValidityInput(inputList)) {
+        buttonElement.setAttribute('disabled', true);
+        buttonElement.classList.add('popup__button_disable');
+    } else {
+        buttonElement.removeAttribute('disabled');
+        buttonElement.classList.remove('popup__button_disable');
+    }
+}
+
+const setEventListeners = (formElement) => {
+    const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
+    const buttonElement = formElement.querySelector('.popup__button');
+    toggleButtonState(inputList, buttonElement);
+
+    inputList.forEach((inputElement) => {
+        inputElement.addEventListener('input', function () {
+            checkInputValidity(formElement, inputElement);
+            toggleButtonState(inputList, buttonElement);
+        });
+    });
 };
 
-document.querySelectorAll('.popup__form').forEach((formElement) => {
-    formElement.addEventListener('input', validateInputEvent); // Вызовем функцию validateInputEvent на каждый ввод символа
+const enableValidation = () => {
+    const formList = Array.from(document.querySelectorAll('.popup__form'));
+    formList.forEach((formElement) => {
+        formElement.addEventListener('submit', function (evt) {
+            evt.preventDefault();
+        });
+        setEventListeners(formElement);
+    });
+};
 
-    formElement.addEventListener('submit', sendForm);
-    submitButtonChangeState(formElement);
-})
+enableValidation();
+
+
+
+
+
+
+// const validateInput = (evt) => {
+//     const inputElement = evt.target;
+//     const formElement = evt.currentTarget;
+//     checkInputValidity(formElement, inputElement);
+//     changeStateSubmitButton(formElement);
+// };
+//
+// document.querySelectorAll('.popup__form').forEach((formElement) => {
+//     formElement.addEventListener('input', validateInput); // Вызовем функцию validateInputEvent на каждый ввод символа
+//
+//     formElement.addEventListener('submit', (evt) => {
+//         evt.preventDefault();
+//     });
+//
+//     changeStateSubmitButton(formElement);
+// })
