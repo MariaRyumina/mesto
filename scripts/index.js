@@ -19,24 +19,27 @@ const preloadEditPopup = () => {
     aboutInput.value = profileAbout.textContent;
 }
 preloadEditPopup();
+
 //функция открытия попапов
 const openPopup = (popup) => {
     popup.classList.add('popup_opened');
+    document.addEventListener('keydown', closePopupEscape)
 };
 
 //функция закрытие попапов
 const closePopup = (popup) => {
     popup.classList.remove('popup_opened');
+    document.removeEventListener('keydown', closePopupEscape);
 };
 
-//закрытие попапа на кнопку 'esc'
-// document.querySelector('.page').addEventListener('keydown',(evt) => {
-//     if (evt.key === 'Escape') {
-//         popups.forEach(popup => {
-//             closePopup(popup);
-//         })
-//     }
-// })
+//функция закрытия попапа на кнопку 'esc'
+const closePopupEscape = (evt) => {
+    if (evt.key === 'Escape') {
+        popups.forEach((popup) => {
+            closePopup(popup);
+        })
+    }
+}
 
 //закрытие попапа на overlay
 popups.forEach(popup => {
@@ -151,15 +154,18 @@ buttonOpenAddPopup.addEventListener('click', function () {
 //закрытие попапа Add через кнопку "Создать" и добавление новой карточки в галерею
 const handleFormSubmitAdd = (evt) => {
     evt.preventDefault();
+
     let newCard = {
         name: titleInput.value,
         link: linkInput.value
     }
     const card = createNewCard(newCard);
     closePopup(popupAdd);
+
     const button = formElementAdd.querySelector('.popup__button');
     button.setAttribute('disabled', true);
-    button.classList.add('popup__button_disable');
+    button.classList.add('popup__button_disabled');
+
     elements.prepend(card);
     formElementAdd.reset();
 

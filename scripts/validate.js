@@ -31,10 +31,10 @@ const hasValidityInput = (inputList) => {
 const toggleButtonState = (inputList, buttonElement) => {
     if (hasValidityInput(inputList)) {
         buttonElement.setAttribute('disabled', true);
-        buttonElement.classList.add('popup__button_disable');
+        buttonElement.classList.add('popup__button_disabled');
     } else {
         buttonElement.removeAttribute('disabled');
-        buttonElement.classList.remove('popup__button_disable');
+        buttonElement.classList.remove('popup__button_disabled');
     }
 }
 
@@ -54,33 +54,12 @@ const setEventListeners = (formElement) => {
 const enableValidation = () => {
     const formList = Array.from(document.querySelectorAll('.popup__form'));
     formList.forEach((formElement) => {
+        setEventListeners(formElement);
         formElement.addEventListener('submit', function (evt) {
             evt.preventDefault();
         });
-        setEventListeners(formElement);
+
     });
 };
 
 enableValidation();
-
-
-
-
-
-
-// const validateInput = (evt) => {
-//     const inputElement = evt.target;
-//     const formElement = evt.currentTarget;
-//     checkInputValidity(formElement, inputElement);
-//     changeStateSubmitButton(formElement);
-// };
-//
-// document.querySelectorAll('.popup__form').forEach((formElement) => {
-//     formElement.addEventListener('input', validateInput); // Вызовем функцию validateInputEvent на каждый ввод символа
-//
-//     formElement.addEventListener('submit', (evt) => {
-//         evt.preventDefault();
-//     });
-//
-//     changeStateSubmitButton(formElement);
-// })
