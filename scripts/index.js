@@ -23,14 +23,22 @@ preloadEditPopup();
 //функция открытия попапов
 const openPopup = (popup) => {
     popup.classList.add('popup_opened');
-    document.addEventListener('keydown', closePopupEscape)
+    document.addEventListener('keydown', closePopupEscape);
 };
 
 //функция закрытие попапов
 const closePopup = (popup) => {
     popup.classList.remove('popup_opened');
     document.removeEventListener('keydown', closePopupEscape);
+    cleanValidationMessage(popup);
 };
+
+// const cleanValidationMessage = (span) => {
+//     const error = document.querySelectorAll('.popup__input-error');
+//     error.forEach((span) => {
+//         span.textContent = '';
+//     })
+// }
 
 //функция закрытия попапа на кнопку 'esc'
 const closePopupEscape = (evt) => {
@@ -171,3 +179,13 @@ const handleFormSubmitAdd = (evt) => {
 
 }
 formElementAdd.addEventListener('submit', handleFormSubmitAdd);
+
+// функция добавления новой карточки по нажатию на 'Enter'
+function keyHandler (evt) {
+    if (evt.key === 'Enter') {
+        createNewCard(titleInput.value, linkInput.value);
+    }
+}
+
+titleInput.addEventListener('keydown', keyHandler);
+linkInput.addEventListener('keydown', keyHandler);
