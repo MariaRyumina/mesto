@@ -33,13 +33,6 @@ const closePopup = (popup) => {
     cleanValidationMessage(popup);
 };
 
-// const cleanValidationMessage = (span) => {
-//     const error = document.querySelectorAll('.popup__input-error');
-//     error.forEach((span) => {
-//         span.textContent = '';
-//     })
-// }
-
 //функция закрытия попапа на кнопку 'esc'
 const closePopupEscape = (evt) => {
     if (evt.key === 'Escape') {
