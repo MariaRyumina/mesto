@@ -26,11 +26,10 @@ const openPopup = (popup) => {
     document.addEventListener('keydown', closePopupByEsc);
 };
 
-//функция закрытие попапов
+//функция закрытия попапов
 const closePopup = (popup) => {
     popup.classList.remove('popup_opened');
     document.removeEventListener('keydown', closePopupByEsc);
-    formElementAdd.reset();
 };
 
 //функция закрытия попапа на кнопку 'esc'
@@ -59,9 +58,12 @@ buttonsClosePopup.forEach((btn) => {
 
 //открытие попапа Edit и внесение текущих значений из профайла в инпуты
 buttonOpenEditPopup.addEventListener('click', function () {
-    cleanValidationMessage(popupEdit);
+    cleanValidationMessage(popupEdit, validationConfig);
     preloadEditPopup();
-    enableSubmitButton();
+
+    const buttonElement = formElementEdit.querySelector('.popup__button');
+    enableSubmitButton(buttonElement, validationConfig);
+
     openPopup(popupEdit);
 });
 
@@ -123,8 +125,12 @@ initialCards.forEach((item) => {
 
 //открытие попапа Add
 buttonOpenAddPopup.addEventListener('click', function () {
-    cleanValidationMessage(popupAdd);
-    disableSubmitButton();
+    cleanValidationMessage(popupAdd, validationConfig);
+    formElementAdd.reset();
+
+    const buttonElement = formElementAdd.querySelector(validationConfig.submitButtonSelector);
+    disableSubmitButton(buttonElement, validationConfig);
+
     openPopup(popupAdd);
 });
 
@@ -141,7 +147,5 @@ const handleFormSubmitAdd = (evt) => {
     closePopup(popupAdd);
 
     elements.prepend(card);
-
-    disableSubmitButton();
 }
 formElementAdd.addEventListener('submit', handleFormSubmitAdd);
