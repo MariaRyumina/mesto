@@ -1,4 +1,4 @@
-
+import { openPopup } from "./index.js"
 
 export class Card {
     constructor(data, templateSelector) {
@@ -7,7 +7,8 @@ export class Card {
         this._templateSelector = templateSelector;
     }
 
-    _getTemplate() { //получаем шаблон карточки
+    //получаем шаблон карточки
+    _getTemplate() {
         const cardElement = document.querySelector(this._templateSelector)
             .content
             .querySelector('.element')
@@ -35,10 +36,9 @@ export class Card {
         this._image = document.querySelector('.popup__img');
         this._image.src = this._link;
         this._image.alt = this._name;
-
         document.querySelector('.popup__img-caption').textContent = this._name;
 
-        document.querySelector('.popup_content_image').classList.add('popup_opened');
+        openPopup(document.querySelector('.popup_content_image'));
     }
 
     _likeCard() {
@@ -50,12 +50,8 @@ export class Card {
     }
 
     _setEventListeners() {
-        this._likeElement.addEventListener('click', this._likeCard);
-
-        this._deleteElement.addEventListener('click', this._deleteCard);
-
-        this._imageElement.addEventListener('click', this._openPopupImage);
+        this._likeElement.addEventListener('click', () => this._likeCard());
+        this._deleteElement.addEventListener('click', () => this._deleteCard());
+        this._imageElement.addEventListener('click', () => this._openPopupImage());
     }
 }
-
-

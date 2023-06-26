@@ -1,4 +1,5 @@
-import {Card} from "./Card.js";
+import { Card } from "./Card.js";
+import { FormValidator } from "./FormValidator.js";
 
 // -----------------------------------------------------------------
 // POPUP EDIT/ADD
@@ -20,10 +21,11 @@ const preloadEditPopup = () => {
     nameInput.value = profileName.textContent;
     aboutInput.value = profileAbout.textContent;
 }
+
 preloadEditPopup();
 
 //функция открытия попапов
-const openPopup = (popup) => {
+export const openPopup = (popup) => {
     popup.classList.add('popup_opened');
     document.addEventListener('keydown', closePopupByEsc);
 };
@@ -60,13 +62,14 @@ buttonsClosePopup.forEach((btn) => {
 
 //открытие попапа Edit и внесение текущих значений из профайла в инпуты
 buttonOpenEditPopup.addEventListener('click', function () {
-    cleanValidationMessage(popupEdit, validationConfig);
+    const form = new FormValidator(validationConfig, formElementEdit);
+    form.cleanValidationMessage();
     preloadEditPopup();
 
-    const buttonElement = formElementEdit.querySelector('.popup__button');
-    enableSubmitButton(buttonElement, validationConfig);
+    form.enableValidation();
+    form.enableSubmitButton();
 
-    openPopup(popupEdit);
+    openPopup(popupEdit, form);
 });
 
 //закрытие попапа Edit через кнопку "Сохранить" и добавление новых значение в профайл
@@ -107,48 +110,9 @@ const initialCards = [
         link: 'https://images.unsplash.com/photo-1560275619-4cc5fa59d3ae?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1849&q=80'
     }
 ];
-// const elements = document.querySelector('.elements');
-// const templateElements = document.querySelector('#elements').content;
-// const image = document.querySelector('.popup__img');
-// const imageCaption = document.querySelector('.popup__img-caption');
-// const popupImage = document.querySelector('.popup_content_image');
+const elements = document.querySelector('.elements');
 const titleInput = document.querySelector('.popup__input_value_title');
 const linkInput = document.querySelector('.popup__input_value_link');
-
-// //лайк карточке
-// const likeButton = (evt) => {
-//     const like = evt.target.closest('.element__like')
-//     like.classList.toggle('element__like_active');
-// }
-//
-// //удаление карточки
-// const deleteCard = (evt) => {
-//     const card = evt.target.closest('.element');
-//     card.remove();
-// }
-
-//функция добавления карточки
-// const createNewCard = (el) => {
-//     const card = templateElements.querySelector('.element').cloneNode(true);
-//     card.querySelector('.element__title').textContent = el.name;
-//     card.querySelector('.element__img').alt = el.name;
-//     card.querySelector('.element__img').src = el.link;
-//
-//     card.querySelector('.element__like').addEventListener('click', likeButton);
-//     card.querySelector('.element__delete').addEventListener('click', deleteCard);
-//     card.querySelector('.element__img').addEventListener('click', () => {
-//         image.src = el.link;
-//         image.alt = el.name;
-//         imageCaption.textContent = el.name;
-//         openPopup(popupImage);
-//     });
-//     return card;
-// }
-
-// initialCards.forEach((item) => {
-//     const card = createNewCard(item);
-//     elements.append(card);
-// });
 
 //добавление 6 карточек из массива на страницу
 initialCards.forEach((item) => {
@@ -160,13 +124,15 @@ initialCards.forEach((item) => {
 
 //открытие попапа Add
 buttonOpenAddPopup.addEventListener('click', function () {
-    cleanValidationMessage(popupAdd, validationConfig);
+    const form = new FormValidator(validationConfig, formElementAdd);
+
+    form.cleanValidationMessage();
     formElementAdd.reset();
 
-    const buttonElement = formElementAdd.querySelector(validationConfig.submitButtonSelector);
-    disableSubmitButton(buttonElement, validationConfig);
+    form.enableValidation();
+    form.disableSubmitButton();
 
-    openPopup(popupAdd);
+    openPopup(popupAdd, form);
 });
 
 //закрытие попапа Add через кнопку "Создать" и добавление новой карточки в галерею
@@ -177,10 +143,20 @@ const handleFormSubmitAdd = (evt) => {
         name: titleInput.value,
         link: linkInput.value
     }
-    const card = createNewCard(newCard);
+
+    const card = new Card(newCard, '#elements');
 
     closePopup(popupAdd);
 
-    elements.prepend(card);
+    elements.prepend(card.generateCard());
 }
 formElementAdd.addEventListener('submit', handleFormSubmitAdd);
+
+const validationConfig = {
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__button',
+    disabledButtonClass: 'popup__button_disabled',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: '.popup__input-error'
+}
