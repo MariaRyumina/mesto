@@ -6,6 +6,7 @@ export class FormValidator {
         this._inputErrorClass = validationConfig.inputErrorClass;
         this._inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector));
         this._buttonElement = formElement.querySelector(validationConfig.submitButtonSelector);
+        this._enableValidation();
     }
 
     // очищаем интупы при закрытии без сохранения и удаляем ошибки валидации
@@ -78,10 +79,10 @@ export class FormValidator {
         });
     }
 
-    enableValidation () {
+    _enableValidation () {
         this._setEventListeners();
         this._formElement.addEventListener('submit', function (evt) {
                 evt.preventDefault();
-            });
+        });
     }
 }

@@ -17,6 +17,14 @@ const profileAbout = document.querySelector('.profile__subtitle');
 const buttonsClosePopup = document.querySelectorAll('.popup__close');
 const popups = document.querySelectorAll('.popup');
 
+const validationConfig = {
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__button',
+    disabledButtonClass: 'popup__button_disabled',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: '.popup__input-error'
+}
 const preloadEditPopup = () => {
     nameInput.value = profileName.textContent;
     aboutInput.value = profileAbout.textContent;
@@ -25,7 +33,7 @@ const preloadEditPopup = () => {
 preloadEditPopup();
 
 //функция открытия попапов
-export const openPopup = (popup) => {
+const openPopup = (popup) => {
     popup.classList.add('popup_opened');
     document.addEventListener('keydown', closePopupByEsc);
 };
@@ -60,16 +68,16 @@ buttonsClosePopup.forEach((btn) => {
     })
 });
 
+const formValidatorEditPopup = new FormValidator(validationConfig, formElementEdit);
+
 //открытие попапа Edit и внесение текущих значений из профайла в инпуты
 buttonOpenEditPopup.addEventListener('click', function () {
-    const form = new FormValidator(validationConfig, formElementEdit);
-    form.cleanValidationMessage();
+    formValidatorEditPopup.cleanValidationMessage();
     preloadEditPopup();
 
-    form.enableValidation();
-    form.enableSubmitButton();
+    formValidatorEditPopup.enableSubmitButton();
 
-    openPopup(popupEdit, form);
+    openPopup(popupEdit);
 });
 
 //закрытие попапа Edit через кнопку "Сохранить" и добавление новых значение в профайл
@@ -113,26 +121,37 @@ const initialCards = [
 const elements = document.querySelector('.elements');
 const titleInput = document.querySelector('.popup__input_value_title');
 const linkInput = document.querySelector('.popup__input_value_link');
+const image = document.querySelector('.popup__img');
+const imageCaption = document.querySelector('.popup__img-caption');
+const popupImage = document.querySelector('.popup_content_image');
+
+const openPopupImage = (link, name) => {
+    image.src = link;
+    image.alt = name;
+    imageCaption.textContent = name;
+
+    openPopup(popupImage);
+}
+
+const card = (initialCards, elements, openPopupImage) => new Card(initialCards, elements, openPopupImage);
 
 //добавление 6 карточек из массива на страницу
 initialCards.forEach((item) => {
-    const card = new Card(item, '#elements');
-    const cardElement = card.generateCard();
+    const cardElement = card(item, '#elements', openPopupImage).generateCard();
 
     document.querySelector('.elements').append(cardElement);
 })
 
+const formValidatorAddPopup = new FormValidator(validationConfig, formElementAdd);
+
 //открытие попапа Add
 buttonOpenAddPopup.addEventListener('click', function () {
-    const form = new FormValidator(validationConfig, formElementAdd);
-
-    form.cleanValidationMessage();
+    formValidatorAddPopup.cleanValidationMessage();
     formElementAdd.reset();
 
-    form.enableValidation();
-    form.disableSubmitButton();
+    formValidatorAddPopup.disableSubmitButton();
 
-    openPopup(popupAdd, form);
+    openPopup(popupAdd);
 });
 
 //закрытие попапа Add через кнопку "Создать" и добавление новой карточки в галерею
@@ -144,19 +163,8 @@ const handleFormSubmitAdd = (evt) => {
         link: linkInput.value
     }
 
-    const card = new Card(newCard, '#elements');
-
     closePopup(popupAdd);
 
-    elements.prepend(card.generateCard());
+    elements.prepend(card(newCard, '#elements', openPopupImage).generateCard());
 }
 formElementAdd.addEventListener('submit', handleFormSubmitAdd);
-
-const validationConfig = {
-    formSelector: '.popup__form',
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__button',
-    disabledButtonClass: 'popup__button_disabled',
-    inputErrorClass: 'popup__input_type_error',
-    errorClass: '.popup__input-error'
-}
