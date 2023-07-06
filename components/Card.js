@@ -1,9 +1,11 @@
+import { PopupWithImage } from "./PopupWithImage.js";
+
 export class Card {
-    constructor(data, templateSelector, openPopupImage) {
+    constructor(data, templateSelector) {
         this._name = data.name;
         this._link = data.link;
         this._templateSelector = templateSelector;
-        this._openPopupImage = openPopupImage;
+        this.openPopupImage = new PopupWithImage();
     }
 
     // получаем шаблон карточки
@@ -40,6 +42,6 @@ export class Card {
     _setEventListeners() {
         this._likeElement.addEventListener('click', () => this._likeCard());
         this._deleteElement.addEventListener('click', () => this._deleteCard());
-        this._imageElement.addEventListener('click', () => this._openPopupImage(this._link, this._name));
+        this._imageElement.addEventListener('click', () => this.openPopupImage.open(this._link, this._name));
     }
 }
