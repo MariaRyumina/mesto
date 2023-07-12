@@ -2,7 +2,7 @@ import { PopupWithImage } from "./PopupWithImage.js";
 
 export class Card {
     constructor(data, templateSelector) {
-        this._name = data.name;
+        this._name = data.title;
         this._link = data.link;
         this._templateSelector = templateSelector;
         this.openPopupImage = new PopupWithImage();
