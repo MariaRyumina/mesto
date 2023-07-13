@@ -1,3 +1,5 @@
+import "../styles/index.css";
+
 import { Card } from "../components/Card.js";
 import { FormValidator } from "../components/FormValidator.js";
 import {
@@ -9,16 +11,13 @@ import {
     popupAdd,
     nameInput,
     aboutInput,
-    profileName,
-    profileAbout,
     validationConfig,
     initialCards,
-    elements,
-    titleInput,
-    linkInput
+    elements
 } from "../utils/constants.js"
 import { PopupWithForm } from "../components/PopupWithForm.js";
 import { Section } from "../components/Section.js";
+import {UserInfo} from "../components/UserInfo.js";
 
 const formValidatorEditPopup = new FormValidator(validationConfig, formElementEdit);
 const formValidatorAddPopup = new FormValidator(validationConfig, formElementAdd);
@@ -33,9 +32,15 @@ const cardList = new Section({
 
 cardList.renderItems();
 
+const user = new UserInfo({
+    selectorName: '.profile__title',
+    selectorAbout: '.profile__subtitle'
+})
+
 const formEdit = new PopupWithForm({
     selector: popupEdit,
-    submitForm: (item) => {
+    submitForm: (inputsForm) => {
+        user.setUserInfo(inputsForm);
     }
 })
 
@@ -50,7 +55,6 @@ const formAdd = new PopupWithForm({
 //открытие попапа Add
 buttonOpenAddPopup.addEventListener('click', function () {
     formValidatorAddPopup.cleanValidationMessage();
-    formElementAdd.reset();
 
     formValidatorAddPopup.disableSubmitButton();
 
@@ -60,8 +64,10 @@ buttonOpenAddPopup.addEventListener('click', function () {
 //открытие попапа Edit
 buttonOpenEditPopup.addEventListener('click', function () {
     formValidatorEditPopup.cleanValidationMessage();
-
     formValidatorEditPopup.enableSubmitButton();
+
+    nameInput.value = user.getUserInfo().name;
+    aboutInput.value = user.getUserInfo().about;
 
     formEdit.open();
 })

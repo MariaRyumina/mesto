@@ -1,5 +1,4 @@
 import { Popup } from "./Popup.js";
-import { elements, formElementAdd, linkInput, titleInput, initialCards } from "../utils/constants.js";
 
 export class PopupWithForm extends Popup {
     constructor({ selector, submitForm }) {
@@ -28,6 +27,8 @@ export class PopupWithForm extends Popup {
 
             this.close()
         });
+
+        super.setEventListeners();
     }
 
     close() {
