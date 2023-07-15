@@ -2,13 +2,8 @@ export const formElementEdit = document.querySelector('.popup__form_edit');
 export const formElementAdd = document.querySelector('.popup__form_add');
 export const buttonOpenEditPopup = document.querySelector('.profile__button-edit');
 export const buttonOpenAddPopup = document.querySelector('.profile__button-add');
-export const popupEdit = document.querySelector('.popup_content_edit');
-export const popupAdd = document.querySelector('.popup_content_add');
-export const popupImage = document.querySelector('.popup_content_image');
 export const nameInput = document.querySelector('.popup__input_value_name');
 export const aboutInput = document.querySelector('.popup__input_value_about');
-export const profileName = document.querySelector('.profile__title');
-export const profileAbout = document.querySelector('.profile__subtitle');
 export const validationConfig = {
     formSelector: '.popup__form',
     inputSelector: '.popup__input',
@@ -43,8 +38,3 @@ export const initialCards = [
         link: 'https://images.unsplash.com/photo-1662740600740-46d992377b1c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2064&q=80'
     }
 ];
-export const elements = document.querySelector('.elements');
-export const titleInput = document.querySelector('.popup__input_value_title');
-export const linkInput = document.querySelector('.popup__input_value_link');
-export const image = document.querySelector('.popup__img');
-export const imageCaption = document.querySelector('.popup__img-caption');

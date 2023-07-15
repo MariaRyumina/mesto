@@ -1,11 +1,9 @@
-import { PopupWithImage } from "./PopupWithImage.js";
-
 export class Card {
-    constructor(data, templateSelector) {
+    constructor(data, templateSelector, popupImage) {
         this._name = data.title;
         this._link = data.link;
         this._templateSelector = templateSelector;
-        this.openPopupImage = new PopupWithImage();
+        this._popupImage = popupImage;
     }
 
     // получаем шаблон карточки
@@ -37,11 +35,12 @@ export class Card {
 
     _deleteCard() {
         this._element.remove();
+        this._element = null;
     }
 
     _setEventListeners() {
         this._likeElement.addEventListener('click', () => this._likeCard());
         this._deleteElement.addEventListener('click', () => this._deleteCard());
-        this._imageElement.addEventListener('click', () => this.openPopupImage.open(this._link, this._name));
+        this._imageElement.addEventListener('click', () => this._popupImage.open(this._link, this._name));
     }
 }
