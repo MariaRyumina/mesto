@@ -24,14 +24,12 @@ export class Popup {
     setEventListeners() {
         //закрытие попапа на "X"
         this._container.querySelector('.popup__close').addEventListener('click', () => {
-            console.log('X')
             this.close()
         })
 
         //закрытие попапа на overlay
         this._container.addEventListener('click', (evt) => {
             if (evt.target === evt.currentTarget) {
-                console.log('overlay')
                 this.close();
             }
         })
