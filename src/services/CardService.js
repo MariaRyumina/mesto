@@ -1,7 +1,7 @@
 import { HEADER_AUTH } from "../utils/constants.js";
-import { Section } from "../components/Section.js";
 
-class CardService{
+class CardService {
+    // Загрузка карточек с сервера
     getCardList() {
         return fetch('https://mesto.nomoreparties.co/v1/cohort-71/cards', {
             headers: {
@@ -13,6 +13,7 @@ class CardService{
 
     }
 
+    //Добавление новой карточки
     addCard({ name, link}) {
         fetch('https://mesto.nomoreparties.co/v1/cohort-71/cards', {
             method: 'POST',

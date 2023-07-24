@@ -3,4 +3,13 @@
     height: 120px;
     object-fit: cover;
     border-radius: 50%;
+    background: url("../../../images/yo.png");
+    transition: opacity 0.3s ease-in-out;
+}
+
+.profile__avatar:hover {
+    opacity: .5;
+    /*background: url("../../../images/iconEditUser.svg");*/
+    /*object-fit: cover;*/
+    cursor: pointer;
 }

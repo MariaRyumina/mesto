@@ -9,8 +9,7 @@ import {
     buttonOpenAddPopup,
     nameInput,
     aboutInput,
-    validationConfig,
-    initialCards
+    validationConfig
 } from "../utils/constants.js";
 import { PopupWithForm } from "../components/PopupWithForm.js";
 import { Section } from "../components/Section.js";
@@ -25,8 +24,7 @@ const formValidatorAddPopup = new FormValidator(validationConfig, formElementAdd
 const popupImage = new PopupWithImage('.popup_content_image');
 popupImage.setEventListeners();
 
-
-UserService.getInfo()
+UserService.getInfo() //Загрузка информации о пользователе с сервера
     .then(result => {
         const user = new UserInfo({
             selectorName: '.profile__title',
@@ -34,16 +32,16 @@ UserService.getInfo()
             selectorAvatar: '.profile__avatar'
         })
 
-        user.setUserInfo(result);
-        user.setUserAvatar(result);
+        user.setUserInfo(result); // принимает новые данные пользователя и добавляет их на страницу
+        user.setUserAvatar(result);  // принимает новые данные пользователя и добавляет их на страницу
 
         return user;
     })
+
     .then(user => {
         const formEdit = new PopupWithForm({
             selector: '.popup_content_edit',
             submitForm: (inputsForm) => {
-                console.log(inputsForm)
                 UserService.patchUserInfo(inputsForm);
                 UserService.getInfo()
                     .then(info => user.setUserInfo(info));
