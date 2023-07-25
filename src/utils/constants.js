@@ -1,7 +1,9 @@
 export const formElementEdit = document.querySelector('.popup__form_edit');
 export const formElementAdd = document.querySelector('.popup__form_add');
+export const formElementDelete = document.querySelector('.popup__form_delete');
 export const buttonOpenEditPopup = document.querySelector('.profile__button-edit');
 export const buttonOpenAddPopup = document.querySelector('.profile__button-add');
+export const buttonOpenDeletePopup = document.querySelectorAll('.element__delete');
 export const nameInput = document.querySelector('.popup__input_value_name');
 export const aboutInput = document.querySelector('.popup__input_value_about');
 export const validationConfig = {

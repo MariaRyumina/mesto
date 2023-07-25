@@ -9,7 +9,8 @@ import {
     buttonOpenAddPopup,
     nameInput,
     aboutInput,
-    validationConfig
+    validationConfig,
+    buttonOpenDeletePopup
 } from "../utils/constants.js";
 import { PopupWithForm } from "../components/PopupWithForm.js";
 import { Section } from "../components/Section.js";
@@ -17,6 +18,7 @@ import { UserInfo } from "../components/UserInfo.js";
 import { PopupWithImage } from "../components/PopupWithImage.js";
 import UserService from "../services/UserService.js";
 import CardService from "../services/CardService.js";
+import { PopupWithConfirmation } from "../components/PopupWithConfirmation.js";
 
 const formValidatorEditPopup = new FormValidator(validationConfig, formElementEdit);
 const formValidatorAddPopup = new FormValidator(validationConfig, formElementAdd);
@@ -24,7 +26,8 @@ const formValidatorAddPopup = new FormValidator(validationConfig, formElementAdd
 const popupImage = new PopupWithImage('.popup_content_image');
 popupImage.setEventListeners();
 
-UserService.getInfo() //Загрузка информации о пользователе с сервера
+//загрузка информации о пользователе с сервера
+const user = UserService.getInfo()
     .then(result => {
         const user = new UserInfo({
             selectorName: '.profile__title',
@@ -32,19 +35,20 @@ UserService.getInfo() //Загрузка информации о пользов�
             selectorAvatar: '.profile__avatar'
         })
 
-        user.setUserInfo(result); // принимает новые данные пользователя и добавляет их на страницу
-        user.setUserAvatar(result);  // принимает новые данные пользователя и добавляет их на страницу
+        user.setUserInfo(result); // принимает 'name, about' и добавляет их на страницу
+        user.setUserAvatar(result);  // принимает 'avatar' и добавляет на страницу
 
         return user;
     })
 
-    .then(user => {
-        const formEdit = new PopupWithForm({
+    //загрузка новой информации о пользователе на сервер и отображение ее на странице
+user.then(user => {
+        const formEdit = new PopupWithForm({ //TODO как добавить информацию без перезагрузки страницы
             selector: '.popup_content_edit',
             submitForm: (inputsForm) => {
-                UserService.patchUserInfo(inputsForm);
-                UserService.getInfo()
-                    .then(info => user.setUserInfo(info));
+                UserService.patchUserInfo(inputsForm); //из инпутов подгружаем на сервер новые 'name, about'
+                UserService.getInfo() //делаем запрос на сервер
+                    .then(info => user.setUserInfo(info)); //получаем новую информацию о пользователь с сервера на страничку
             }
         })
         formEdit.setEventListeners();
@@ -62,13 +66,35 @@ UserService.getInfo() //Загрузка информации о пользов�
         })
     })
 
-const cardListSelection = () => {
-    CardService.getCardList()
-        .then(cardList => {
+const changeLikeStatus = (id, isLike) => {
+    if (isLike) {
+        return CardService.dislikeCard(id);
+    }
+    return CardService.likeCard(id);
+}
+
+const createCard = (data, templateSelector, currentUserId, popupImage, popupDelete) => {
+    const card = new Card(data, templateSelector, currentUserId, popupImage, popupDelete, changeLikeStatus);
+    return card.generateCard();
+}
+
+const cardSelection = CardService.getCardList() //загрузка карточек с сервера
+    .then(cardList => { //cardList - массив объектов, который приходит с сервера
+        //открытие попапа подтверждения удаления карточки
+        const popupDelete = new PopupWithConfirmation({
+            popupSelector: '.popup_content_delete',
+            submitForm: (id) => {
+                CardService.deleteCard(id);
+                popupDelete.close();
+            }
+        })
+        popupDelete.setEventListeners();
+
+        return user.then((userInfo) => {
             const cardListSection = new Section({
                     items: cardList,
-                    renderer: item => {
-                        const cardElement = createCard(item, '#elements', popupImage);
+                    renderer: item => { //проходимся forEach по каждому элементу, создаем новую карточку, добавляем на страницу
+                        const cardElement = createCard(item, '#elements', userInfo.getId(), popupImage, popupDelete);
                         cardListSection.addItem(cardElement);
                     }
                 }, '.elements'
@@ -76,20 +102,19 @@ const cardListSelection = () => {
             cardListSection.renderItems();
             return cardListSection;
         })
-}
-cardListSelection();
+    })
 
-const createCard = (data, templateSelector, popupImage) => {
-    const card = new Card(data, templateSelector, popupImage);
-    const cardElement = card.generateCard();
-
-    return cardElement;
-}
-
+//загрузка новой карточки на сервер
 const formAdd = new PopupWithForm({
     selector: '.popup_content_add',
     submitForm: (item) => {
-        CardService.addCard(item) //TODO как добавить картинку без перезагрузки
+        CardService.addCard(item).then(resp => {
+            if (resp.ok) {
+                cardSelection.then(selection => {
+                    selection.addItem(item)
+                })
+            }
+        })
     }
 })
 formAdd.setEventListeners();

@@ -13,10 +13,15 @@ export class UserInfo {
         }
     }
 
+    getId() {
+        return this._id
+    }
+
     // принимает новые данные пользователя и добавляет их на страницу
-    setUserInfo({ name, about }) {
+    setUserInfo({ name, about, _id }) {
         this._name.textContent = name;
         this._about.textContent = about;
+        this._id = _id;
     }
 
     setUserAvatar({ avatar }) {

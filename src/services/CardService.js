@@ -1,7 +1,12 @@
 import { HEADER_AUTH } from "../utils/constants.js";
 
 class CardService {
-    // Загрузка карточек с сервера
+    constructor(url, header) {
+        this._url = url;
+        this._header = header;
+    }
+
+    //загрузка карточек с сервера
     getCardList() {
         return fetch('https://mesto.nomoreparties.co/v1/cohort-71/cards', {
             headers: {
@@ -10,12 +15,11 @@ class CardService {
         })
             .then(res => res.json())
             .catch(err => console.error(err))
-
     }
 
-    //Добавление новой карточки
+    //загрузка новой карточки на сервер
     addCard({ name, link}) {
-        fetch('https://mesto.nomoreparties.co/v1/cohort-71/cards', {
+        return fetch('https://mesto.nomoreparties.co/v1/cohort-71/cards', {
             method: 'POST',
             headers: {
                 authorization: HEADER_AUTH,
@@ -29,9 +33,49 @@ class CardService {
             .catch(err => console.error(err))
     }
 
-    deleteCard() {}
+    //запрос на удаление карточки
+    deleteCard(id) {
+        fetch(`https://mesto.nomoreparties.co/v1/cohort-71/cards/${id}`, {
+            method: 'DELETE',
+            headers: {
+                authorization: HEADER_AUTH,
+                'Content-Type': 'application/json'
+            }
+        })
+            .catch(err => console.error(err))
+    }
 
-    changeStatusLike() {}
+    likeCard(id) {
+        return fetch(`https://mesto.nomoreparties.co/v1/cohort-71/cards/${id}/likes`, {
+            method: 'PUT',
+            headers: {
+                authorization: HEADER_AUTH,
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(res => {
+                const body = res.json()
+                body.then(body => console.log("like",body))
+                return body
+            })
+            .catch(err => console.error(err))
+    }
+
+    dislikeCard(id) {
+        return fetch(`https://mesto.nomoreparties.co/v1/cohort-71/cards/${id}/likes`, {
+            method: 'DELETE',
+            headers: {
+                authorization: HEADER_AUTH,
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(res => {
+                const body = res.json()
+                body.then(body => console.log("dis",body))
+                return body
+            })
+            .catch(err => console.error(err))
+    }
 }
 
 export default new CardService()

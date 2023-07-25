@@ -1,7 +1,7 @@
 import { HEADER_AUTH } from '../utils/constants.js'
 
 class UserService {
-    //Загрузка информации о пользователе с сервера
+    //загрузка информации о пользователе с сервера
     getInfo() {
         return fetch('https://nomoreparties.co/v1/cohort-71/users/me', {
             headers: {
@@ -9,11 +9,10 @@ class UserService {
             }
         })
             .then(res => res.json())
-
             .catch(err => console.error(err))
     }
 
-    //Редактирование профиля
+    //загрузка новой информации о пользователе на сервер
     patchUserInfo({ name, about }) {
         fetch('https://mesto.nomoreparties.co/v1/cohort-71/users/me', {
             method: 'PATCH',
