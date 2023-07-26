@@ -14,7 +14,7 @@ class UserService {
 
     //загрузка новой информации о пользователе на сервер
     patchUserInfo({ name, about }) {
-        fetch('https://mesto.nomoreparties.co/v1/cohort-71/users/me', {
+        return fetch('https://mesto.nomoreparties.co/v1/cohort-71/users/me', {
             method: 'PATCH',
             headers: {
                 authorization: HEADER_AUTH,
@@ -28,7 +28,20 @@ class UserService {
             .catch(err => console.error(err))
     }
 
-    updateUserAvatar() {}
+    //обновление аватара пользователя
+    updateUserAvatar({ avatar }) {
+        return fetch('https://mesto.nomoreparties.co/v1/cohort-71/users/me/avatar', {
+            method: 'PATCH',
+            headers: {
+                authorization: HEADER_AUTH,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                avatar
+            })
+        })
+            .catch(err => console.error(err))
+    }
 }
 
 export default new UserService();

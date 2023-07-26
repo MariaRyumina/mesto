@@ -11,7 +11,16 @@ export class Section {
         });
     }
 
-    addItem(element) {
+    addItemEnd(element) {
+        this._container.append(element);
+    }
+
+    addItemStart(element) {
         this._container.prepend(element);
+    }
+
+    deleteItem(element) {
+        element.remove();
+        element = null;
     }
 }

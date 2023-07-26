@@ -35,7 +35,7 @@ class CardService {
 
     //запрос на удаление карточки
     deleteCard(id) {
-        fetch(`https://mesto.nomoreparties.co/v1/cohort-71/cards/${id}`, {
+        return fetch(`https://mesto.nomoreparties.co/v1/cohort-71/cards/${id}`, {
             method: 'DELETE',
             headers: {
                 authorization: HEADER_AUTH,

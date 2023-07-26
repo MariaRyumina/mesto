@@ -7,6 +7,7 @@ import {
     formElementAdd,
     buttonOpenEditPopup,
     buttonOpenAddPopup,
+    buttonOpenEditAvatarPopup,
     nameInput,
     aboutInput,
     validationConfig
@@ -26,7 +27,7 @@ const popupImage = new PopupWithImage('.popup_content_image');
 popupImage.setEventListeners();
 
 //загрузка информации о пользователе с сервера
-const user = UserService.getInfo()
+const userInfo = UserService.getInfo()
     .then(result => {
         const user = new UserInfo({
             selectorName: '.profile__title',
@@ -40,28 +41,35 @@ const user = UserService.getInfo()
         return user;
     })
 
-    //загрузка новой информации о пользователе на сервер и отображение ее на странице
-user.then(user => {
-        const formEdit = new PopupWithForm({
-            selector: '.popup_content_edit',
-            submitForm: (inputsForm) => {
-                UserService.patchUserInfo(inputsForm); //из инпутов подгружаем на сервер новые 'name, about'
-                UserService.getInfo() //делаем запрос на сервер
-                    .then(info => user.setUserInfo(info)); //получаем новую информацию о пользователь с сервера на страничку
-            }
-        })
-        formEdit.setEventListeners();
+//загрузка новой информации о пользователе на сервер и отображение ее на странице
+userInfo.then(user => {
+    const formEdit = new PopupWithForm({
+        selector: '.popup_content_edit',
+        submitForm: (inputsForm) => {
+            UserService.patchUserInfo(inputsForm) //из инпутов подгружаем на сервер новые 'name, about'
+                .catch(err => console.error(err))
+            UserService.getInfo() //делаем запрос на сервер
+                // .then(info => user.setUserInfo(info)) //получаем новую информацию о пользователь с сервера на страничку
+                .then(resp => {
+                    if(resp.ok) {
 
-        //открытие попапа Edit
-        buttonOpenEditPopup.addEventListener('click', function () {
-            formValidatorEditPopup.cleanValidationMessage();
-            formValidatorEditPopup.enableSubmitButton();
+                    }
+                })
+        }
+    })
 
-            const userInfo = user.getUserInfo();
-            nameInput.value = userInfo.name;
-            aboutInput.value = userInfo.about;
+    formEdit.setEventListeners();
 
-            formEdit.open();
+    //открытие попапа Edit
+    buttonOpenEditPopup.addEventListener('click', function () {
+        formValidatorEditPopup.cleanValidationMessage();
+        formValidatorEditPopup.enableSubmitButton();
+
+        const userInfo = user.getUserInfo();
+        nameInput.value = userInfo.name;
+        aboutInput.value = userInfo.about;
+
+        formEdit.open();
         })
     })
 
@@ -72,49 +80,63 @@ const changeLikeStatus = (id, isLike) => {
     return CardService.likeCard(id);
 }
 
+//функция создания карточки
 const createCard = (data, templateSelector, currentUserId, popupImage, popupDelete) => {
     const card = new Card(data, templateSelector, currentUserId, popupImage, popupDelete, changeLikeStatus);
     return card.generateCard();
 }
 
 const cardSelection = CardService.getCardList() //загрузка карточек с сервера
-    .then(cardList => { //cardList - массив объектов, который приходит с сервера
-
-        //открытие попапа подтверждения удаления карточки
-        const popupDelete = new PopupWithConfirmation({
-            popupSelector: '.popup_content_delete',
-            submitForm: (id) => {
-                CardService.deleteCard(id);
-                popupDelete.close();
-            }
-        })
-        popupDelete.setEventListeners();
-
-        return user.then((userInfo) => {
+    .then(cardList =>  //cardList - массив объектов, который приходит с сервера
+        userInfo.then((userInfo) => {
             const cardListSection = new Section({
                     items: cardList,
                     renderer: item => { //проходимся forEach по каждому элементу, создаем новую карточку, добавляем на страницу
                         const cardElement = createCard(item, '#elements', userInfo.getId(), popupImage, popupDelete);
-                        cardListSection.addItem(cardElement);
+                        cardListSection.addItemStart(cardElement);
                     }
                 }, '.elements'
             )
             cardListSection.renderItems();
             return cardListSection;
         })
-    })
+    );
+
+//открытие попапа подтверждения удаления карточки
+const popupDelete = new PopupWithConfirmation({
+    popupSelector: '.popup_content_delete',
+    submitForm: (element, id) => {
+        CardService.deleteCard(id)
+            .then(resp => {
+                if(resp.ok) {
+                    cardSelection.then(section => {
+                        section.deleteItem(element)
+                    })
+                }
+            })
+        popupDelete.close();
+    }
+})
 
 //загрузка новой карточки на сервер
 const formAdd = new PopupWithForm({
     selector: '.popup_content_add',
     submitForm: (item) => {
-        CardService.addCard(item).then(resp => {
-            if (resp.ok) {
-                cardSelection.then(selection => {
-                    selection.addItem(item)
-                })
-            }
-        })
+        CardService.addCard(item)
+            .then(resp => {
+                if (resp.ok) {
+                    resp.json()
+                        .then(card => {
+                            userInfo.then(user => {
+                                cardSelection.then(selection => {
+                                    const cardElement = createCard(card, '#elements', user.getId(), popupImage, popupDelete);
+                                    selection.addItemEnd(cardElement);
+                                })
+                            })
+
+                        })
+                }
+            })
     }
 })
 formAdd.setEventListeners();
@@ -127,3 +149,34 @@ buttonOpenAddPopup.addEventListener('click', function () {
 
     formAdd.open();
 });
+
+// const userAvatar = UserService.updateUserAvatar(avatar)
+//     .then(result => {
+//         console.log(result)
+//     })
+//
+// userAvatar.then(user => {
+//     console.log(222, user)
+// })
+
+
+const formEditAvatar = new PopupWithForm({
+    selector: '.popup_content_edit-avatar',
+    submitForm: avatar => {
+        UserService.updateUserAvatar(avatar)
+            .then(resp => {
+                if (resp.ok) {
+                    console.log(resp)
+                }
+            })
+    }
+})
+
+//открытие попапа Edit-avatar
+buttonOpenEditAvatarPopup.addEventListener('click', function () {
+    formValidatorAddPopup.cleanValidationMessage();
+
+    formValidatorAddPopup.disableSubmitButton();
+
+    formEditAvatar.open();
+})

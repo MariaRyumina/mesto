@@ -63,13 +63,11 @@ export class Card {
             })
     }
 
-    _deleteCard() {
-        if (this._userId === this._currentUserId) {
-            this._popupDelete.deleteCard(this._cardId)
-            // this._element.remove();
-            // this._element = null;
-        }
-    }
+    // _deleteCard() {
+    //     if (this._userId === this._currentUserId) {
+    //         this._popupDelete.deleteCard(this._cardId)
+    //     }
+    // }
 
     _setEventListeners() {
         this._likeElement.addEventListener('click', () => this._likeCard());

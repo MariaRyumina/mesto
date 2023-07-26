@@ -24,6 +24,7 @@ export class UserInfo {
         this._id = _id;
     }
 
+    //принимает новый аватар пользователя и добавляет на страницу
     setUserAvatar({ avatar }) {
         this._avatar.src = avatar;
     }
