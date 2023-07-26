@@ -9,8 +9,7 @@ import {
     buttonOpenAddPopup,
     nameInput,
     aboutInput,
-    validationConfig,
-    buttonOpenDeletePopup
+    validationConfig
 } from "../utils/constants.js";
 import { PopupWithForm } from "../components/PopupWithForm.js";
 import { Section } from "../components/Section.js";
@@ -43,7 +42,7 @@ const user = UserService.getInfo()
 
     //загрузка новой информации о пользователе на сервер и отображение ее на странице
 user.then(user => {
-        const formEdit = new PopupWithForm({ //TODO как добавить информацию без перезагрузки страницы
+        const formEdit = new PopupWithForm({
             selector: '.popup_content_edit',
             submitForm: (inputsForm) => {
                 UserService.patchUserInfo(inputsForm); //из инпутов подгружаем на сервер новые 'name, about'
@@ -80,6 +79,7 @@ const createCard = (data, templateSelector, currentUserId, popupImage, popupDele
 
 const cardSelection = CardService.getCardList() //загрузка карточек с сервера
     .then(cardList => { //cardList - массив объектов, который приходит с сервера
+
         //открытие попапа подтверждения удаления карточки
         const popupDelete = new PopupWithConfirmation({
             popupSelector: '.popup_content_delete',

@@ -53,11 +53,7 @@ class CardService {
                 'Content-Type': 'application/json'
             }
         })
-            .then(res => {
-                const body = res.json()
-                body.then(body => console.log("like",body))
-                return body
-            })
+            .then(res => res.json())
             .catch(err => console.error(err))
     }
 
@@ -69,11 +65,7 @@ class CardService {
                 'Content-Type': 'application/json'
             }
         })
-            .then(res => {
-                const body = res.json()
-                body.then(body => console.log("dis",body))
-                return body
-            })
+            .then(res => res.json())
             .catch(err => console.error(err))
     }
 }

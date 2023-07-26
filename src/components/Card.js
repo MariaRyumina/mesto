@@ -37,6 +37,7 @@ export class Card {
         this._likeElement = this._element.querySelector('.element__like');
 
         this._changeLikeStatus(this._likes);
+
         this._setEventListeners();
 
         return this._element;
@@ -64,17 +65,16 @@ export class Card {
 
     _deleteCard() {
         if (this._userId === this._currentUserId) {
-            this._popupDelete.open(this);
             this._popupDelete.deleteCard(this._cardId)
+            // this._element.remove();
+            // this._element = null;
         }
-        // this._element.remove();
-        // this._element = null;
     }
 
     _setEventListeners() {
         this._likeElement.addEventListener('click', () => this._likeCard());
 
-        this._deleteElement.addEventListener('click', () => this._deleteCard());
+        this._deleteElement.addEventListener('click', () => this._popupDelete.open(this));
 
         this._imageElement.addEventListener('click', () => this._popupImage.open(this._link, this._name));
     }
