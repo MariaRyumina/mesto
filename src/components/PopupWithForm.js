@@ -24,6 +24,9 @@ export class PopupWithForm extends Popup {
 
             this._submitForm(this._getInputValues());
 
+            this._submitButton = this._element.querySelector('.popup__button');
+            this._submitButton.textContent = "Сохранение...";
+
             this.close()
         });
 
@@ -35,4 +38,6 @@ export class PopupWithForm extends Popup {
 
         super.close();
     }
+
+
 }

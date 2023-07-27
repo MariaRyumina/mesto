@@ -1,5 +1,3 @@
-import { HEADER_AUTH } from "../utils/constants.js";
-
 class CardService {
     constructor(url, header) {
         this._url = url;
@@ -8,9 +6,9 @@ class CardService {
 
     //загрузка карточек с сервера
     getCardList() {
-        return fetch('https://mesto.nomoreparties.co/v1/cohort-71/cards', {
+        return fetch(`${this._url}`, {
             headers: {
-                authorization: HEADER_AUTH
+                authorization: this._header
             }
         })
             .then(res => res.json())
@@ -19,10 +17,10 @@ class CardService {
 
     //загрузка новой карточки на сервер
     addCard({ name, link}) {
-        return fetch('https://mesto.nomoreparties.co/v1/cohort-71/cards', {
+        return fetch(`${this._url}`, {
             method: 'POST',
             headers: {
-                authorization: HEADER_AUTH,
+                authorization: this._header,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
@@ -35,10 +33,10 @@ class CardService {
 
     //запрос на удаление карточки
     deleteCard(id) {
-        return fetch(`https://mesto.nomoreparties.co/v1/cohort-71/cards/${id}`, {
+        return fetch(`${this._url}/${id}`, {
             method: 'DELETE',
             headers: {
-                authorization: HEADER_AUTH,
+                authorization: this._header,
                 'Content-Type': 'application/json'
             }
         })
@@ -46,10 +44,10 @@ class CardService {
     }
 
     likeCard(id) {
-        return fetch(`https://mesto.nomoreparties.co/v1/cohort-71/cards/${id}/likes`, {
+        return fetch(`${this._url}/${id}/likes`, {
             method: 'PUT',
             headers: {
-                authorization: HEADER_AUTH,
+                authorization: this._header,
                 'Content-Type': 'application/json'
             }
         })
@@ -58,10 +56,10 @@ class CardService {
     }
 
     dislikeCard(id) {
-        return fetch(`https://mesto.nomoreparties.co/v1/cohort-71/cards/${id}/likes`, {
+        return fetch(`${this._url}/${id}/likes`, {
             method: 'DELETE',
             headers: {
-                authorization: HEADER_AUTH,
+                authorization: this._header,
                 'Content-Type': 'application/json'
             }
         })
@@ -70,4 +68,4 @@ class CardService {
     }
 }
 
-export default new CardService()
+export default new CardService('https://mesto.nomoreparties.co/v1/cohort-71/cards', '4007c4a6-1dc8-477b-8692-004338e6361b')
