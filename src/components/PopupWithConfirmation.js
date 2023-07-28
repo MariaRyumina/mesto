@@ -3,20 +3,22 @@ export class PopupWithConfirmation extends Popup {
     constructor({ popupSelector, submitForm }) {
         super(popupSelector);
         this._submitForm = submitForm;
-        this._form = document.querySelector(popupSelector).querySelector('.popup__form');
+        this._form = this._container.querySelector('.popup__form');
     }
 
     open(item) {
+        this._item = item;
         super.open();
-
-        this.setEventListeners(item);
     }
 
-    deleteCard(item) {
-        this._submitForm(item._element, item._cardId)
+    apply() {
+        if (this._item != null){
+            this._submitForm(this._item);
+            this._item = null;
+        }
     }
 
-    setEventListeners(item) {
+    setEventListeners() {
         super.setEventListeners();
 
         this._form.addEventListener('submit', (evt) => {
@@ -25,8 +27,7 @@ export class PopupWithConfirmation extends Popup {
             this._submitButton = this._form.querySelector('.popup__button');
             this._submitButton.textContent = 'Удаление...';
 
-            this.deleteCard(item)
-
+            this.apply()
         })
     }
 }
