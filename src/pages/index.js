@@ -43,7 +43,7 @@ let currentUserId
 //функция создания карточки
 const createCard = (data, templateSelector, popupImage, popupDelete) => {
     const card = new Card(data, templateSelector, popupImage, popupDelete, changeLikeStatus, currentUserId);
-    return card.generateCard(user._id);
+    return card.generateCard();
 }
 
 const cardListSection = new Section({

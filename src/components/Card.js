@@ -31,7 +31,7 @@ export class Card {
         return this._isLike;
     }
 
-    generateCard(currentUserId) {
+    generateCard() {
         this._element = this._getTemplate();
 
         this._element.querySelector('.element__title').textContent = this._name;
@@ -40,7 +40,7 @@ export class Card {
         this._imageElement.src = this._link;
 
         this._deleteElement = this._element.querySelector('.element__delete');
-        if (this._userId !== currentUserId) {
+        if (this._userId !== this._currentUserId) {
             this._deleteElement.style.display = "none";
         }
 
