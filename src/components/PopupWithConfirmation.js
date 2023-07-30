@@ -1,8 +1,9 @@
 import { Popup } from './Popup.js'
 export class PopupWithConfirmation extends Popup {
-    constructor({ popupSelector, submitForm }) {
+    constructor({ popupSelector, submitFormHandler }) {
         super(popupSelector);
-        this._submitForm = submitForm;
+        this._submitFormHandler = submitFormHandler;
+        this._form = this._container.querySelector('.popup__form');
     }
 
     open(item) {
@@ -11,8 +12,8 @@ export class PopupWithConfirmation extends Popup {
     }
 
     apply() {
-        if (this._item != null){
-            this._submitForm(this._item);
+        if (this._item != null) {
+            this._submitFormHandler(this._item);
             this._item = null;
         }
     }
@@ -20,7 +21,7 @@ export class PopupWithConfirmation extends Popup {
     setEventListeners() {
         super.setEventListeners();
 
-        this._container.addEventListener('submit', (evt) => {
+        this._form.addEventListener('submit', (evt) => {
             evt.preventDefault();
 
             this._submitButton = this._container.querySelector('.popup__button');

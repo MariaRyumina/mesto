@@ -38,7 +38,7 @@ const user = new UserInfo({
     selectorAvatar: '.profile__avatar'
 })
 
-let currentUserId
+let currentUserId;
 
 //функция создания карточки
 const createCard = (data, templateSelector, popupImage, popupDelete) => {
@@ -68,7 +68,7 @@ Promise.all([api.getUserInfo(), api.getCardList()])
 //редактирование профиля, загрузка новой информации на сервер и отображение ее на странице
 const formEdit = new PopupWithForm({
     selector: '.popup_content_edit',
-    submitForm: (inputsForm) => {
+    submitFormHandler: (inputsForm) => {
         api.patchUserInfo(inputsForm) //из инпутов подгружаем на сервер новые 'name, about'
             .then(info => user.setUserInfo(info)) //получаем новую информацию о пользователь с сервера на страничку
             .then(() => formEdit.close())
@@ -92,7 +92,7 @@ buttonOpenEditPopup.addEventListener('click', function () { //открытие �
 //создание новой карточки и загрузка ее на сервер
 const formAdd = new PopupWithForm({
     selector: '.popup_content_add',
-    submitForm: (item) => {
+    submitFormHandler: (item) => {
         api.addCard(item)
             .then(card => {
                 const cardElement = createCard(card, '#elements', popupImage, popupDelete);
@@ -115,7 +115,7 @@ buttonOpenAddPopup.addEventListener('click', function () { //открытие п
 //подтверждения удаления карточки
 const popupDelete = new PopupWithConfirmation({
     popupSelector: '.popup_content_delete',
-    submitForm: (card) => {
+    submitFormHandler: (card) => {
         api.deleteCard(card.getCardId())
             .then(() => card.deleteItem())
             .then(() => popupDelete.close())
@@ -139,7 +139,7 @@ const changeLikeStatus = (card) => {
 
 const formEditAvatar = new PopupWithForm({
     selector: '.popup_content_edit-avatar',
-    submitForm: avatar => {
+    submitFormHandler: avatar => {
         api.updateUserAvatar(avatar)
             .then(() => user.setUserAvatar(avatar))
             .then(() => formEditAvatar.close())

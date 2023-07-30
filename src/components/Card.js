@@ -23,9 +23,6 @@ export class Card {
     getCardId(){
         return this._cardId
     }
-    getElement(){
-        return this._cardId
-    }
 
     isLike(){
         return this._isLike;

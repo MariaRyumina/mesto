@@ -13,10 +13,6 @@ export class UserInfo {
         }
     }
 
-    getId() {
-        return this._id
-    }
-
     // принимает новые данные пользователя и добавляет их на страницу
     setUserInfo({ name, about, _id }) {
         this._name.textContent = name;
