@@ -2,7 +2,7 @@
   <img src="https://pictures.s3.yandex.net/resources/__2020-02-25__12.19.27_1586081326.png" alt="promo">
 </div>
 
-# *Учебный проект "Место" (базовый  JavaScript)*
+# *Учебный проект "Место" (JavaScript)*
 https://mariaryumina.github.io/mesto/
 ___
 
