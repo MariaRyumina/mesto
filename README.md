@@ -14,7 +14,7 @@ ___
   https://www.figma.com/file/bjyvbKKJN2naO0ucURl2Z0/JavaScript.-Sprint-5?node-id=0%3A1&mode=dev
   https://www.figma.com/file/kRVLKwYG3d1HGLvh7JFWRT/JavaScript.-Sprint-6?node-id=0%3A1&mode=dev
   https://www.figma.com/file/PSdQFRHoxXJFs2FH8IXViF/JavaScript.-Sprint-9?node-id=0%3A1&mode=dev
-  
+* Также в рамках учебной программы проект был <a href="https://github.com/MariaRyumina/mesto-react">портирован на React</a> и добавлен функционал с <a href="https://github.com/MariaRyumina/react-mesto-auth">регистрацией и авторизацией</a> пользователя;
 
 ---
 
